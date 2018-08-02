@@ -4,24 +4,22 @@ import datetime
 from add_entry import AddEntry
 from search_entry import SearchEntry
 
-while True:
+
+def add_entry_prompt():
+    print("WORK LOG")
     some = input("What would you like to do?\n"
         "a) Add a new entry\n"
         "b) Search in existing entries\n"
         "c) Quit program\n")
 
-    search_entry = SearchEntry()
-    add_entry = AddEntry()
-
     if some == 'a':
-        add_entry.task_date()
-        add_entry.task_title()
-        add_entry.time_spent()
-        add_entry.notes()
-        add_entry.write_to_csv()
+        addd_entry = AddEntry()
+        addd_entry.task_date()
+        addd_entry.task_title()
+        addd_entry.time_spent()
+        addd_entry.notes()
+        addd_entry.write_to_csv()
         print("The entry has been added. Press enter to return to the menu! ")
-
-
 
 
     # gebruiker moet een invoer kunnen doen en deze moet opgeslagen worden
@@ -79,4 +77,4 @@ while True:
 
 
 if __name__ == '__main__':
-    pass
+    add_entry_prompt()

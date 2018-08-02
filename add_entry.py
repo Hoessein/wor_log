@@ -44,9 +44,6 @@ class AddEntry(object):
             if not file_exists:
                 csv_writer.writeheader()
 
-            csv_writer.writerow({'TaskDate': add_entry.task_date(), 'TaskTitle': add_entry.task_title(),
-                                 'Minutes': add_entry.time_spent(), 'Notes': add_entry.notes()})
+            csv_writer.writerow({'TaskDate': self.task_date(), 'TaskTitle': self.task_title(),
+                                 'Minutes': self.time_spent(), 'Notes': self.notes()})
 
-
-add_entry = AddEntry()
-add_entry.write_to_csv()

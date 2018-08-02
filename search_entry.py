@@ -42,7 +42,4 @@ class SearchEntry(object):
             # #         print(r)
 
 
-search_entry = SearchEntry()
-search_entry.find_by_pattern()
-
 # some = re.findall(find_by_pattern, row['TaskTitle'])
