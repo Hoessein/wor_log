@@ -10,8 +10,17 @@ while True:
         "b) Search in existing entries\n"
         "c) Quit program\n")
 
+    search_entry = SearchEntry()
+    add_entry = AddEntry()
+
     if some == 'a':
         add_entry.task_date()
+        add_entry.task_title()
+        add_entry.time_spent()
+        add_entry.notes()
+        add_entry.write_to_csv()
+        print("The entry has been added. Press enter to return to the menu! ")
+
 
 
 
@@ -67,8 +76,7 @@ while True:
     # #
     #
 
-search_entry = SearchEntry()
-add_entry = AddEntry()
+
 
 if __name__ == '__main__':
     pass

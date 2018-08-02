@@ -47,7 +47,6 @@ class AddEntry(object):
             csv_writer.writerow({'TaskDate': add_entry.task_date(), 'TaskTitle': add_entry.task_title(),
                                  'Minutes': add_entry.time_spent(), 'Notes': add_entry.notes()})
 
-        print("The entry has been added. Press enter to return to the menu! ")
 
 add_entry = AddEntry()
 add_entry.write_to_csv()
