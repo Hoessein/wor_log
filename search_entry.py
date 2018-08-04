@@ -1,6 +1,6 @@
 import csv
 import re
-from collections import OrderedDict
+
 
 class SearchEntry(object):
 
@@ -47,45 +47,12 @@ class SearchEntry(object):
 
         pattern = re.findall(find_by_pattern, data)
 
-        print('------------------')
-        print('Inside of Pattern: \n', pattern)
-        print('------------------')
-
         for row in self.csv_file:
-            for x in pattern:
+            for x in set(pattern):
+
                 if x in row.values():
-                    print(row)
-
-        # for row in data:
-        #     print(row)
-        #
-        # for row in self.csv_file:
-        #     for x in pik:
-        #         if x == row['TaskDate']:
-        #             pik2.append(row)
-        # print(len(pik2))
-
-
-
-            # for field in row:
-            #     # if field ==
-            #     #     print(row)
-
-
-                # for x in column:
-                #     print(x)
-                # "Task title: ", re.search(pattern, row['TaskTitle']).group() + "\n"
-                  # "minutes: ", re.search(pattern, row['Minutes']).group() + "\n"
-                  # "Notes: ", re.search(pattern, row['Notes']).group() + "\n"
-
-
-            # print(row['TaskTitle'])
-            # print(pattern)
-            # match = pattern.match(row['TaskTitle']).groupdict()
-            # print(match)
-            # # for row in self.csv_file:
-            # #     for r in pattern.finditer(row['TaskTitle']):
-            # #         print(r)
-
-
-# some = re.findall(find_by_pattern, row['TaskTitle'])
+                    print("Task date: " + row['TaskDate'] + "\n"
+                          "Task title: " + row['TaskTitle'] + "\n"
+                          "Minutes: " + row['Minutes'] + "\n"
+                          "Notes: " + row['Notes'] + "\n"
+                          )
