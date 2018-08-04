@@ -70,6 +70,9 @@ def search_entry_prompt():
         elif search_by == 'd':
             search_entry.clear()
             search_entry.find_by_time_spent()
+        else:
+            search_entry.clear()
+            instructions()
 
 # couple of instances
 

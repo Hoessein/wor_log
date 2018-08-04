@@ -19,7 +19,7 @@ class SearchEntry(object):
         """The user is asked to input a date.
            The user is then shown a corresponding work log entry"""
 
-        find_by_date = input("enter date")
+        find_by_date = input("Enter a date")
         for row in self.csv_file:
             if row['TaskDate'] == find_by_date:
                 self.clear()
@@ -28,47 +28,45 @@ class SearchEntry(object):
                       "Minutes: " + row['Minutes'] + "\n"
                       "Notes: " + row['Notes'] + "\n"
                       )
+            else:
+                self.clear()
+                print("There are no matches found, try again please")
 
     def find_by_time_spent(self):
         """The user is asked to input a number of minutes.
             The user is then showed a work log entry corresponding
             the entered minutes"""
 
-        find_by_time_spent = input("enter time spent")
+        find_by_time_spent = input("Enter minutes")
         for row in self.csv_file:
             if row['Minutes'] == find_by_time_spent:
-                if row['Minutes'] == find_by_time_spent:
                     self.clear()
                     print("Task date: " + row['TaskDate'] + "\n"
                           "Task title: " + row['TaskTitle'] + "\n"
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
+            else:
+                self.clear()
+                print("There are no matches found, try again please")
 
     def find_by_exact_search(self):
         """The user is asked to input a search criteria
             and prints out corresponding work log entries"""
 
-        find_by_exact_search = input("Enter your exact search")
+        exact_search = input("Enter your exact search")
         for row in self.csv_file:
             # The exact search is based on the columns: 'TaskTitle' and 'Notes'
-            if row['TaskTitle'] == find_by_exact_search:
+            if exact_search in row['TaskTitle'] or row['Notes']:
                 self.clear()
                 print("Task date: " + row['TaskDate'] + "\n"
                       "Task title: " + row['TaskTitle'] + "\n"
                       "Minutes: " + row['Minutes'] + "\n"
                       "Notes: " + row['Notes'] + "\n"
                       )
-
-        for row in self.csv_file:
-            # The exact search is based on the columns: 'TaskTitle' and 'Notes'
-            if row['Notes'] == find_by_exact_search:
+            else:
                 self.clear()
-                print("Task date: " + row['TaskDate'] + "\n"
-                      "Task title: " + row['TaskTitle'] + "\n"
-                      "Minutes: " + row['Minutes'] + "\n"
-                      "Notes: " + row['Notes'] + "\n"
-                      )
+                print("There are no matches found, try again please")
 
     def find_by_pattern(self):
         """A regex input is expected, this method check if there is a match and prints it out"""
@@ -97,3 +95,6 @@ class SearchEntry(object):
                           "Notes: " + row['Notes'] + "\n"
                           )
                     break
+            else:
+                self.clear()
+                print("There are no matches found, try again please")
