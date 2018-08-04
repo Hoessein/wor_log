@@ -39,9 +39,9 @@ class AddEntry(object):
 
     def write_to_csv(self):
         """writes the data entered by the user to a csv_file"""
-        file_exists = os.path.isfile('test.csv')
+        file_exists = os.path.isfile('morg.csv')
 
-        with open('test.csv', 'a') as new_file:
+        with open('morg.csv', 'a') as new_file:
             fieldnames = ['TaskDate', 'TaskTitle', 'Minutes', 'Notes']
 
             csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames, delimiter='\t')

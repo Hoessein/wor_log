@@ -5,6 +5,7 @@ from add_entry import AddEntry
 from search_entry import SearchEntry
 import sys
 
+file_exists = os.path.isfile('morg.csv')
 
 def instructions():
     """Instructions on how the console works
@@ -16,11 +17,22 @@ def instructions():
                      "b) Search in existing entries\n"
                      "c) Quit program\n")
         if some == 'a':
+            clear()
             add_entry_prompt()
         elif some == 'b':
-            search_entry_prompt()
+            if file_exists:
+                clear()
+                search_entry_prompt()
+            else:
+                print("There are no entries, first add an entry before you can search")
         elif some == 'c':
-            break
+            clear()
+            print("Thank you for using the Worklog, goodbye!")
+            sys.exit()
+
+def clear():
+    """This is a function that clears the console screen"""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def add_entry_prompt():
     """Creates a csv file, in the csv method the methods to ask user for input will be called
@@ -32,6 +44,7 @@ def back_to_menu():
     """If the user enters any key they will be taken back to the menu"""
     back_to_menu = input("The entry has been added. Press any key to return to the menu! ")
     if back_to_menu == "":
+        clear()
         instructions()
 
 
@@ -46,12 +59,16 @@ def search_entry_prompt():
         "e) return to menu")
 
         if search_by == 'a':
+            clear()
             search_entry.find_by_date()
         elif search_by == 'b':
+            clear()
             search_entry.find_by_exact_search()
         elif search_by == 'c':
+            clear()
             search_entry.find_by_pattern()
         elif search_by == 'd':
+            clear()
             search_entry.find_by_time_spent()
 
 #couple of instances

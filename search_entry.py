@@ -1,11 +1,15 @@
 import csv
 import re
+import os
 
 
 class SearchEntry(object):
 
     def __init__(self):
-        self.csv_file = csv.DictReader(open('test.csv', "rt"), delimiter="\t")
+        file_exists = os.path.isfile('morg.csv')
+
+        if file_exists:
+            self.csv_file = csv.DictReader(open('morg.csv', "rt"), delimiter="\t")
 
     def find_by_date(self):
         """The user is asked to input a date.
@@ -62,7 +66,7 @@ class SearchEntry(object):
         """A regex input is expected, this method check if there is a match and prints it out"""
         find_by_pattern = input(r"Enter your pattern")
 
-        names_file = open("test.csv")
+        names_file = open("morg.csv")
         data = names_file.read()
 
         pattern = re.findall(find_by_pattern, data)
@@ -74,10 +78,11 @@ class SearchEntry(object):
 
                 if x in row['TaskTitle']:
                     print("Task date: " + row['TaskDate'] + "\n"
-                          "Tas title: " + row['TaskTitle'] + "\n"
+                          "Task title: " + row['TaskTitle'] + "\n"
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
+                    break
 
                 if x in row['Notes']:
                     print("Task date: " + row['TaskDate'] + "\n"
@@ -85,3 +90,4 @@ class SearchEntry(object):
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
+                    break
