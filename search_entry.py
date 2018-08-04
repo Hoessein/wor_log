@@ -11,13 +11,18 @@ class SearchEntry(object):
         if file_exists:
             self.csv_file = csv.DictReader(open('morg.csv', "rt"), delimiter="\t")
 
+    def clear(self):
+        """This is a function that clears the console screen"""
+        os.system('cls' if os.name == 'nt' else 'clear')
+
     def find_by_date(self):
         """The user is asked to input a date.
            The user is then shown a corresponding work log entry"""
 
-        find_by_date  = input("enter date")
+        find_by_date = input("enter date")
         for row in self.csv_file:
             if row['TaskDate'] == find_by_date:
+                self.clear()
                 print("Task date: " + row['TaskDate'] + "\n"
                       "Task title: " + row['TaskTitle'] + "\n"
                       "Minutes: " + row['Minutes'] + "\n"
@@ -33,6 +38,7 @@ class SearchEntry(object):
         for row in self.csv_file:
             if row['Minutes'] == find_by_time_spent:
                 if row['Minutes'] == find_by_time_spent:
+                    self.clear()
                     print("Task date: " + row['TaskDate'] + "\n"
                           "Task title: " + row['TaskTitle'] + "\n"
                           "Minutes: " + row['Minutes'] + "\n"
@@ -47,15 +53,17 @@ class SearchEntry(object):
         for row in self.csv_file:
             # The exact search is based on the columns: 'TaskTitle' and 'Notes'
             if row['TaskTitle'] == find_by_exact_search:
+                self.clear()
                 print("Task date: " + row['TaskDate'] + "\n"
                       "Task title: " + row['TaskTitle'] + "\n"
                       "Minutes: " + row['Minutes'] + "\n"
                       "Notes: " + row['Notes'] + "\n"
-            )
+                      )
 
         for row in self.csv_file:
             # The exact search is based on the columns: 'TaskTitle' and 'Notes'
             if row['Notes'] == find_by_exact_search:
+                self.clear()
                 print("Task date: " + row['TaskDate'] + "\n"
                       "Task title: " + row['TaskTitle'] + "\n"
                       "Minutes: " + row['Minutes'] + "\n"
@@ -70,8 +78,6 @@ class SearchEntry(object):
         data = names_file.read()
 
         pattern = re.findall(find_by_pattern, data)
-
-        print(set(pattern))
 
         for row in self.csv_file:
             for x in set(pattern):
