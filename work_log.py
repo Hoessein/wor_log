@@ -20,12 +20,13 @@ def instructions():
             search_entry.clear()
             add_entry_prompt()
         elif start == 'b':
+            search_entry.clear()
             # if the file doesn't exist it means that there are no entries made so a search is not possible
             if file_exists:
-                search_entry.clear()
                 search_entry_prompt()
             else:
-                print("There are no entries, first add an entry before you can search")
+                print("There are no entries, first add an entry before you search")
+                search_entry.clear()
         elif start == 'c':
             search_entry.clear()
             print("Thank you for using the Worklog, goodbye!")
