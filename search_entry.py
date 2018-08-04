@@ -24,7 +24,7 @@ class SearchEntry(object):
                 if row['Minutes'] == find_by_time_spent:
                     print("Task date: " + row['TaskDate'] + "\n"
                           "Task title: " + row['TaskTitle'] + "\n"
-                          "Minutes: " + row['Minutes'] + "\n"
+                          "Miutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
 
