@@ -31,7 +31,7 @@ class SearchEntry(object):
                 if row['Minutes'] == find_by_time_spent:
                     print("Task date: " + row['TaskDate'] + "\n"
                           "Task title: " + row['TaskTitle'] + "\n"
-                          "Miutes: " + row['Minutes'] + "\n"
+                          "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
 
@@ -42,7 +42,16 @@ class SearchEntry(object):
         find_by_exact_search = input("Enter your exact search")
         for row in self.csv_file:
             # The exact search is based on the columns: 'TaskTitle' and 'Notes'
-            if row['TaskTitle'] or row['Notes'] == find_by_exact_search:
+            if row['TaskTitle'] == find_by_exact_search:
+                print("Task date: " + row['TaskDate'] + "\n"
+                      "Task title: " + row['TaskTitle'] + "\n"
+                      "Minutes: " + row['Minutes'] + "\n"
+                      "Notes: " + row['Notes'] + "\n"
+            )
+
+        for row in self.csv_file:
+            # The exact search is based on the columns: 'TaskTitle' and 'Notes'
+            if row['Notes'] == find_by_exact_search:
                 print("Task date: " + row['TaskDate'] + "\n"
                       "Task title: " + row['TaskTitle'] + "\n"
                       "Minutes: " + row['Minutes'] + "\n"
@@ -58,6 +67,8 @@ class SearchEntry(object):
 
         pattern = re.findall(find_by_pattern, data)
 
+        print(set(pattern))
+
         for row in self.csv_file:
             for x in set(pattern):
 
@@ -68,3 +79,9 @@ class SearchEntry(object):
                           "Notes: " + row['Notes'] + "\n"
                           )
 
+                if x in row['Notes']:
+                    print("Task date: " + row['TaskDate'] + "\n"
+                          "Task title: " + row['TaskTitle'] + "\n"
+                          "Minutes: " + row['Minutes'] + "\n"
+                          "Notes: " + row['Notes'] + "\n"
+                          )
