@@ -74,7 +74,7 @@ class SearchEntry(object):
 
                 if x in row['TaskTitle']:
                     print("Task date: " + row['TaskDate'] + "\n"
-                          "Task title: " + row['TaskTitle'] + "\n"
+                          "Tas title: " + row['TaskTitle'] + "\n"
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
