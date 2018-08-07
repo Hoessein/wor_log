@@ -7,10 +7,11 @@ class SearchEntry(object):
 
     def __init__(self):
 
-        file_exists = os.path.isfile('morg.csv')
+        file_exists = os.path.isfile('worklog.csv')
 
         if file_exists:
-            self.csv_file = csv.DictReader(open('morg.csv', "rt"), delimiter="\t")
+            with open('worklog.csv', newline='') as csv_file:
+                self.reader = csv.DictReader(csv_file)
 
     def clear(self):
         """This is a function that clears the console screen"""
@@ -22,7 +23,8 @@ class SearchEntry(object):
 
         find_by_date = input("Enter a date")
         print("im outside the for loop")
-        for row in self.csv_file:
+
+        for row in self.reader:
             print("i'm inside the for loop")
             if row['TaskDate'] == find_by_date:
                 self.clear()
@@ -31,7 +33,6 @@ class SearchEntry(object):
                       "Minutes: " + row['Minutes'] + "\n"
                       "Notes: " + row['Notes'] + "\n"
                       )
-                    self.csv_file.seek()
             else:
                 self.clear()
                 print("There are no matches found, try again please")
@@ -43,7 +44,7 @@ class SearchEntry(object):
             the entered minutes"""
 
         find_by_time_spent = input("Enter minutes")
-        for row in self.csv_file:
+        for row in self.reader:
             if row['Minutes'] == find_by_time_spent:
                     self.clear()
                     print("Task date: " + row['TaskDate'] + "\n"
@@ -60,7 +61,7 @@ class SearchEntry(object):
             and prints out corresponding work log entries"""
 
         exact_search = input("Enter your exact search")
-        for row in self.csv_file:
+        for row in self.reader:
             # The exact search is based on the columns: 'TaskTitle' and 'Notes'
             if exact_search in row['TaskTitle'] or row['Notes']:
                 self.clear()
@@ -84,7 +85,7 @@ class SearchEntry(object):
 
         names_file.close()
 
-        for row in self.csv_file:
+        for row in self.reader:
             for x in set(pattern):
 
                 if x in row['TaskTitle']:

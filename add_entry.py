@@ -38,12 +38,12 @@ class AddEntry(object):
         return notes
 
     def write_to_csv(self):
-        file_exists = os.path.isfile('morg.csv')
+        file_exists = os.path.isfile('worklog.csv')
 
-        with open('morg.csv', 'w') as new_file:
+        with open('worklog.csv', 'w') as csv_file:
             fieldnames = ['TaskDate', 'TaskTitle', 'Minutes', 'Notes']
 
-            csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames, delimiter='\t')
+            csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t')
 
             # only if the file does not exist, csv_writer will write the headers
             if not file_exists:
@@ -51,4 +51,6 @@ class AddEntry(object):
 
             csv_writer.writerow({'TaskDate': self.task_date(), 'TaskTitle': self.task_title(),
                                  'Minutes': self.time_spent(), 'Notes': self.notes()})
+
+
 

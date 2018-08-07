@@ -6,43 +6,43 @@ import sys
 file_exists = os.path.isfile('morg.csv')
 
 # couple of instances
+search_entry = SearchEntry()
+add_entry = AddEntry()
 
 
 def instructions():
     """Instructions on how the console works
     it accepts a user input"""
 
+    while True:
+        print("WORK LOG \n"
+              "Press a to add a new entry \n"
+              "Press b to search in existing entries\n"
+              "Press c to quit the program\n"
+              )
 
-    print("WORK LOG \n"
-          "Press a to add a new entry \n"
-          "Press b to search in existing entries\n"
-          "Press c to quit the program\n"
-          )
+        start = input("What would you like to do?")
 
-    start = input("What would you like to do?")
 
-    search_entry = SearchEntry()
-
-    if start == 'a':
-        search_entry.clear()
-        add_entry_prompt()
-    elif start == 'b':
-        # if the file doesn't exist it means that there are no entries made so a search is not possible
-       if file_exists:
-           search_entry.clear()
-           search_entry_prompt()
-       else:
-        print("There are no entries, first add an entry before you search")
-        search_entry.clear()
-    elif start == 'c':
-        search_entry.clear()
-        print("Thank you for using the Worklog, goodbye!")
-        sys.exit()
+        if start == 'a':
+            search_entry.clear()
+            add_entry_prompt()
+        elif start == 'b':
+            # if the file doesn't exist it means that there are no entries made so a search is not possible
+           if file_exists:
+               search_entry.clear()
+               search_entry_prompt()
+           else:
+            print("There are no entries, first add an entry before you search")
+            search_entry.clear()
+        elif start == 'c':
+            search_entry.clear()
+            print("Thank you for using the Worklog, goodbye!")
+            sys.exit()
 
 def add_entry_prompt():
     """Creates a csv file, in the csv method the methods to ask user for input will be called
         After the entry is added, theinstructions menu will be shown again"""
-    add_entry = AddEntry()
     add_entry.write_to_csv()
     back_to_menu()
 
@@ -58,8 +58,6 @@ def back_to_menu():
 
 
 def search_entry_prompt():
-    search_entry = SearchEntry()
-
     search_entry.clear()
 
     """The search method will be run accordingly depending on the user input"""
