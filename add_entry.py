@@ -9,7 +9,7 @@ class AddEntry(object):
         pass
 
     def task_date(self):
-        """Takes an input from the user and makes sure it is in the write format"""
+        """Takes an input from the user and makes sure its in the write format"""
         while True:
             try:
                 task_date = input("What is the date of the task? Please use DD/MM/YYYY")
