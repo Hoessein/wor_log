@@ -38,10 +38,9 @@ class AddEntry(object):
         return notes
 
     def write_to_csv(self):
-        """writes the data entered by the user to a csv_file"""
         file_exists = os.path.isfile('morg.csv')
 
-        with open('morg.csv', 'a') as new_file:
+        with open('morg.csv', 'w') as new_file:
             fieldnames = ['TaskDate', 'TaskTitle', 'Minutes', 'Notes']
 
             csv_writer = csv.DictWriter(new_file, fieldnames=fieldnames, delimiter='\t')
@@ -52,3 +51,4 @@ class AddEntry(object):
 
             csv_writer.writerow({'TaskDate': self.task_date(), 'TaskTitle': self.task_title(),
                                  'Minutes': self.time_spent(), 'Notes': self.notes()})
+
