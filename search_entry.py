@@ -3,8 +3,7 @@ import re
 import os
 
 
-class SearchEntry(object):
-
+class SearchEntry():
 
     def __init__(self):
 
@@ -15,7 +14,7 @@ class SearchEntry(object):
 
     def update_csv(self):
         with open('worklog.csv', 'r') as csv_file:
-            self.reader = csv.DictReader(csv_file)
+            self.reader = csv.DictReader(csv_file, delimiter='\t')
 
     def clear(self):
         """This is a function that clears the console screen"""
@@ -28,16 +27,16 @@ class SearchEntry(object):
         with open('worklog.csv', 'r') as csv_file:
             self.update_csv()
 
-            self.reader = csv.DictReader(csv_file)
+            self.reader = csv.DictReader(csv_file, delimiter ='\t')
 
             find_by_date = input("Enter a date")
             print("im outside the for loop")
+
             for row in self.reader:
-                print("i'm inside the for loop")
                 if row['Taskdate'] == find_by_date:
                     self.clear()
                     print("Task date: " + row['Taskdate'] + "\n"
-                          "Task title: " + row['TaskTitle'] + "\n"
+                          "Task title: " + row['Tasktitle'] + "\n"
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
@@ -51,67 +50,89 @@ class SearchEntry(object):
             The user is then showed a work log entry corresponding
             the entered minutes"""
 
-        find_by_time_spent = input("Enter minutes")
-        for row in self.reader:
-            if row['Minutes'] == find_by_time_spent:
+        with open('worklog.csv', 'r') as csv_file:
+            self.update_csv()
+
+            self.reader = csv.DictReader(csv_file, delimiter ='\t')
+
+            find_by_time_spent = input("Enter minutes")
+            for row in self.reader:
+                if row['Minutes'] == find_by_time_spent:
+                        self.clear()
+                        print("Task date: " + row['Taskdate'] + "\n"
+                              "Task title: " + row['Tasktitle'] + "\n"
+                              "Minutes: " + row['Minutes'] + "\n"
+                              "Notes: " + row['Notes'] + "\n"
+                              )
+                else:
                     self.clear()
-                    print("Task date: " + row['TaskDate'] + "\n"
-                          "Task title: " + row['TaskTitle'] + "\n"
-                          "Minutes: " + row['Minutes'] + "\n"
-                          "Notes: " + row['Notes'] + "\n"
-                          )
-            else:
-                self.clear()
-                print("There are no matches found, try again please")
+                    print("There are no matches found, try again please")
 
     def find_by_exact_search(self):
         """The user is asked to input a search criteria
             and prints out corresponding work log entries"""
 
-        exact_search = input("Enter your exact search")
-        for row in self.reader:
-            # The exact search is based on the columns: 'TaskTitle' and 'Notes'
-            if exact_search in row['TaskTitle'] or row['Notes']:
-                self.clear()
-                print("Task date: " + row['TaskDate'] + "\n"
-                      "Task title: " + row['TaskTitle'] + "\n"
-                      "Minutes: " + row['Minutes'] + "\n"
-                      "Notes: " + row['Notes'] + "\n"
-                      )
-            else:
-                self.clear()
-                print("There are no matches found, try again please")
+        with open('worklog.csv', 'r') as csv_file:
+            self.update_csv()
+
+            self.reader = csv.DictReader(csv_file, delimiter ='\t')
+
+            exact_search = input("Enter your exact search")
+            for row in self.reader:
+                # The exact search is based on the columns: 'Tasktitle' and 'Notes'
+                if exact_search in row['Tasktitle']:
+                    self.clear()
+                    print("Task date: " + row['Taskdate'] + "\n"
+                          "Task title: " + row['Tasktitle'] + "\n"
+                          "Minutes: " + row['Minutes'] + "\n"
+                          "Notes: " + row['Notes'] + "\n"
+                          )
+
+                if exact_search in row['Notes']:
+                    self.clear()
+                    print("Task date: " + row['Taskdate'] + "\n"
+                          "Task title: " + row['Tasktitle'] + "\n"
+                          "Minutes: " + row['Minutes'] + "\n"
+                          "Notes: " + row['Notes'] + "\n"
+                          )
+                else:
+                    self.clear()
+                    print("There are no matches found, try again please")
 
     def find_by_pattern(self):
         """A regex input is expected, this method check if there is a match and prints it out"""
-        find_by_pattern = input(r"Enter your pattern")
+        with open('worklog.csv', 'r') as csv_file:
+            self.update_csv()
 
-        names_file = open("morg.csv")
-        data = names_file.read()
+            self.reader = csv.DictReader(csv_file, delimiter ='\t')
 
-        pattern = re.findall(find_by_pattern, data)
+            find_by_pattern = input(r"Enter your pattern")
 
-        names_file.close()
+            names_file = open("worklog.csv")
+            data = names_file.read()
 
-        for row in self.reader:
-            for x in set(pattern):
+            pattern = re.findall(find_by_pattern, data)
 
-                if x in row['TaskTitle']:
-                    print("Task date: " + row['TaskDate'] + "\n"
-                          "Task title: " + row['TaskTitle'] + "\n"
-                          "Minutes: " + row['Minutes'] + "\n"
-                          "Notes: " + row['Notes'] + "\n"
-                          )
-                    break
+            names_file.close()
 
-                if x in row['Notes']:
-                    print("Task date: " + row['TaskDate'] + "\n"
-                          "Task title: " + row['TaskTitle'] + "\n"
-                          "Minutes: " + row['Minutes'] + "\n"
-                          "Notes: " + row['Notes'] + "\n"
-                          )
-                    break
-            else:
-                self.clear()
-                print("There are no matches found, try again please")
+            for row in self.reader:
+                for x in set(pattern):
 
+                    if x in row['Tasktitle']:
+                        print("Task date: " + row['Taskdate'] + "\n"
+                              "Task title: " + row['Tasktitle'] + "\n"
+                              "Minutes: " + row['Minutes'] + "\n"
+                              "Notes: " + row['Notes'] + "\n"
+                              )
+                        break
+
+                    if x in row['Notes']:
+                        print("Task date: " + row['Taskdate'] + "\n"
+                              "Task title: " + row['Tasktitle'] + "\n"
+                              "Minutes: " + row['Minutes'] + "\n"
+                              "Notes: " + row['Notes'] + "\n"
+                              )
+                        break
+                    else:
+                        self.clear()
+                        print("There are no matches found, try again please")

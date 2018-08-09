@@ -3,9 +3,6 @@ from add_entry import AddEntry
 from search_entry import SearchEntry
 import sys
 import csv
-import copy
-
-file_exists = os.path.isfile('worklog.csv')
 
 # couple of instances
 add_entry = AddEntry()
@@ -29,12 +26,13 @@ def instructions():
             add_entry_prompt()
         elif start == 'b':
             # if the file doesn't exist it means that there are no entries made so a search is not possible
-       # if file_exists:
-            search_entry.clear()
-            search_entry_prompt()
-           # else:
-           #  print("There are no entries, first add an entry before you search")
-            search_entry.clear()
+            file_exists = os.path.isfile('worklog.csv')
+            if file_exists:
+                search_entry.clear()
+                search_entry_prompt()
+            else:
+                print("There are no entries, first add an entry before you search")
+                search_entry.clear()
 
         elif start == 'c':
             search_entry.clear()
@@ -84,8 +82,8 @@ def search_entry_prompt():
 def write_to_csv():
     file_exists = os.path.isfile('worklog.csv')
 
-    with open('worklog.csv', 'w') as csv_file:
-        fieldnames = ['Taskdate', 'TaskTitle', 'Minutes', 'Notes']
+    with open('worklog.csv', 'a') as csv_file:
+        fieldnames = ['Taskdate', 'Tasktitle', 'Minutes', 'Notes']
 
         csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t')
 
@@ -93,7 +91,7 @@ def write_to_csv():
         if not file_exists:
             csv_writer.writeheader()
 
-        csv_writer.writerow({'Taskdate': add_entry.task_date(), 'TaskTitle': add_entry.task_title(),
+        csv_writer.writerow({'Taskdate': add_entry.task_date(), 'Tasktitle': add_entry.task_title(),
                              'Minutes': add_entry.time_spent(), 'Notes': add_entry.notes()})
 
         nopes = SearchEntry()
