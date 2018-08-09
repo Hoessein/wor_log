@@ -37,20 +37,7 @@ class AddEntry(object):
         notes = input("Do you have any additional notes? ")
         return notes
 
-    def write_to_csv(self):
-        file_exists = os.path.isfile('worklog.csv')
 
-        with open('worklog.csv', 'w') as csv_file:
-            fieldnames = ['TaskDate', 'TaskTitle', 'Minutes', 'Notes']
-
-            csv_writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter='\t')
-
-            # only if the file does not exist, csv_writer will write the headers
-            if not file_exists:
-                csv_writer.writeheader()
-
-            csv_writer.writerow({'TaskDate': self.task_date(), 'TaskTitle': self.task_title(),
-                                 'Minutes': self.time_spent(), 'Notes': self.notes()})
 
 
 

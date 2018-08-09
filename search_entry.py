@@ -5,13 +5,17 @@ import os
 
 class SearchEntry(object):
 
+
     def __init__(self):
 
         file_exists = os.path.isfile('worklog.csv')
 
         if file_exists:
-            with open('worklog.csv', newline='') as csv_file:
-                self.reader = csv.DictReader(csv_file)
+            self.reader = self.update_csv()
+
+    def update_csv(self):
+        with open('worklog.csv', 'r') as csv_file:
+            self.reader = csv.DictReader(csv_file)
 
     def clear(self):
         """This is a function that clears the console screen"""
@@ -21,21 +25,25 @@ class SearchEntry(object):
         """The user is asked to input a date.
            The user is then shown a corresponding work log entry"""
 
-        find_by_date = input("Enter a date")
-        print("im outside the for loop")
+        with open('worklog.csv', 'r') as csv_file:
+            self.update_csv()
 
-        for row in self.reader:
-            print("i'm inside the for loop")
-            if row['TaskDate'] == find_by_date:
-                self.clear()
-                print("Task date: " + row['TaskDate'] + "\n"
-                      "Task title: " + row['TaskTitle'] + "\n"
-                      "Minutes: " + row['Minutes'] + "\n"
-                      "Notes: " + row['Notes'] + "\n"
-                      )
-            else:
-                self.clear()
-                print("There are no matches found, try again please")
+            self.reader = csv.DictReader(csv_file)
+
+            find_by_date = input("Enter a date")
+            print("im outside the for loop")
+            for row in self.reader:
+                print("i'm inside the for loop")
+                if row['Taskdate'] == find_by_date:
+                    self.clear()
+                    print("Task date: " + row['Taskdate'] + "\n"
+                          "Task title: " + row['TaskTitle'] + "\n"
+                          "Minutes: " + row['Minutes'] + "\n"
+                          "Notes: " + row['Notes'] + "\n"
+                          )
+                else:
+                    self.clear()
+                    print("There are no matches found, try again please")
 
 
     def find_by_time_spent(self):
