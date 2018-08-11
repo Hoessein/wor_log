@@ -8,6 +8,7 @@ import csv
 add_entry = AddEntry()
 search_entry = SearchEntry()
 
+
 def instructions():
     """Instructions on how the console works
     it accepts a user input"""
@@ -39,6 +40,7 @@ def instructions():
             print("Thank you for using the Worklog, goodbye!")
             sys.exit()
 
+
 def add_entry_prompt():
     """Creates a csv file, in the csv method the methods to ask user for input will be called
         After the entry is added, the instructions menu will be shown again"""
@@ -56,9 +58,8 @@ def back_to_menu():
 
 
 def search_entry_prompt():
-    search_entry.clear()
-
     """The search method will be run accordingly depending on the user input"""
+    search_entry.clear()
     search_by = input("Do you want to search by: \n"
                       "a) Exact date\n"
                       "b) Exact search\n" 
@@ -82,6 +83,7 @@ def search_entry_prompt():
 
 
 def write_to_csv():
+    """writes entries to the csv file"""
     file_exists = os.path.isfile('worklog.csv')
 
     with open('worklog.csv', 'a') as csv_file:
@@ -98,6 +100,7 @@ def write_to_csv():
 
         nopes = SearchEntry()
         nopes.update_csv()
+
 
 if __name__ == '__main__':
     instructions()

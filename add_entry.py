@@ -3,7 +3,7 @@ import os
 import csv
 
 
-class AddEntry(object):
+class AddEntry:
 
     def __init__(self):
         pass
