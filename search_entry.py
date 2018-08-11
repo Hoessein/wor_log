@@ -1,5 +1,6 @@
 import csv
 import re
+import datetime
 import os
 
 
@@ -29,26 +30,32 @@ class SearchEntry():
             counter = 1
             for row in self.reader:
                 if row['Taskdate']:
-                    print(counter, row['Taskdate'])
+                    print(str(counter)+','+ row['Taskdate'])
                     counter += 1
-
-        self.find_by_date()
 
     def find_by_date(self):
         """The user is asked to input a date.
            The user is then shown a corresponding work log entry"""
+
+        while True:
+            try:
+                find_by_date = input("What is the date of the task? Please use DD/MM/YYYY")
+                datetime.datetime.strptime(find_by_date, '%d/%m/%Y')
+                break
+            except ValueError:
+                print("Please enter a date in the DD/MM/YYYY format")
+                self.clear()
+                self.date_entries()
 
         with open('worklog.csv', 'r') as csv_file:
             self.update_csv()
 
             self.reader = csv.DictReader(csv_file, delimiter ='\t')
 
-            find_by_date = input("Enter a date")
-
             self.entries_counter = 0
 
             for row in self.reader:
-                if row['Taskdate'] in find_by_date:
+                if row['Taskdate'] == find_by_date:
                     self.clear()
                     print("Task date: " + row['Taskdate'] + "\n"
                           "Task title: " + row['Tasktitle'] + "\n"
@@ -71,28 +78,32 @@ class SearchEntry():
             counter = 1
             for row in self.reader:
                 if row['Minutes']:
-                    print(counter, row['Minutes'])
+                    print(str(counter) + ":", row['Minutes'] + " minutes")
                     counter += 1
-
-        self.find_by_time_spent()
-
 
     def find_by_time_spent(self):
         """The user is asked to input a number of minutes.
             The user is then showed a work log entry corresponding
             the entered minutes"""
 
+        while True:
+            try:
+                find_by_time_spent = int(input("How many minutes did you work on it? "))
+                break
+            except ValueError:
+                self.clear()
+                print("Please enter the amount of minutes in numbers")
+                self.time_entries()
+
         with open('worklog.csv', 'r') as csv_file:
             self.update_csv()
 
             self.reader = csv.DictReader(csv_file, delimiter ='\t')
 
-            find_by_time_spent = input("Enter minutes")
-
             self.entries_counter = 0
 
             for row in self.reader:
-                if row['Minutes'] in find_by_time_spent:
+                if row['Minutes'] == str(find_by_time_spent):
                     self.clear()
                     print("Task date: " + row['Taskdate'] + "\n"
                           "Task title: " + row['Tasktitle'] + "\n"
@@ -104,8 +115,6 @@ class SearchEntry():
             if self.entries_counter == 0:
                 self.clear()
                 print("There are no matches found, try again please")
-
-
 
 
     def find_by_exact_search(self):
@@ -123,7 +132,7 @@ class SearchEntry():
 
             for row in self.reader:
                 #The exact search is based on the columns: 'Tasktitle' and 'Notes'
-                if row['Tasktitle'] in exact_search or row['Notes'] in exact_search:
+                if row['Tasktitle'] == exact_search or row['Notes'] == exact_search:
                     self.clear()
                     print("Task date: " + row['Taskdate'] + "\n"
                           "Task title: " + row['Tasktitle'] + "\n"
@@ -159,7 +168,7 @@ class SearchEntry():
                 for x in set(pattern):
 
 
-                    if x in row['Tasktitle'] or x in row['Notes']:
+                    if x == row['Tasktitle'] or x == row['Notes']:
                         print("Task date: " + row['Taskdate'] + "\n"
                               "Task title: " + row['Tasktitle'] + "\n"
                               "Minutes: " + row['Minutes'] + "\n"
