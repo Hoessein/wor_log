@@ -28,10 +28,14 @@ class SearchEntry():
             self.reader = csv.DictReader(csv_file, delimiter ='\t')
 
             counter = 1
+            unique_dates_only= []
             for row in self.reader:
                 if row['Taskdate']:
-                    print(str(counter)+','+ row['Taskdate'])
-                    counter += 1
+                    unique_dates_only.append(row['Taskdate'])
+
+            for x in set(unique_dates_only):
+                print(str(counter) + ',' + x)
+                counter += 1
 
     def find_by_date(self):
         """The user is asked to input a date.
@@ -76,10 +80,15 @@ class SearchEntry():
             self.reader = csv.DictReader(csv_file, delimiter ='\t')
 
             counter = 1
+            unique_minutes_only = []
+
             for row in self.reader:
                 if row['Minutes']:
-                    print(str(counter) + ":", row['Minutes'] + " minutes")
-                    counter += 1
+                    unique_minutes_only.append(row['Minutes'])
+
+            for x in set(unique_minutes_only):
+                print(str(counter) + ': ' + x + ' minutes')
+                counter += 1
 
     def find_by_time_spent(self):
         """The user is asked to input a number of minutes.
@@ -166,7 +175,6 @@ class SearchEntry():
 
             for row in self.reader:
                 for x in set(pattern):
-
 
                     if x == row['Tasktitle'] or x == row['Notes']:
                         print("Task date: " + row['Taskdate'] + "\n"
