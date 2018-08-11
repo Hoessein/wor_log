@@ -39,7 +39,6 @@ class SearchEntry():
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
-                    break
             else:
                 self.clear()
                 print("There are no matches found, try again please hihihihi")
@@ -64,7 +63,6 @@ class SearchEntry():
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
-                    break
             else:
                 self.clear()
                 print("There are no matches found, try again please")
@@ -89,16 +87,7 @@ class SearchEntry():
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
-                # elif exact_search in row['Notes']:
-                #     print("ik zit in notes")
-                #
-                #     self.clear()
-                #     print("Task date: " + row['Taskdate'] + "\n"
-                #           "Task title: " + row['Tasktitle'] + "\n"
-                #           "Minutes: " + row['Minutes'] + "\n"
-                #           "Notes: " + row['Notes'] + "\n"
-                #           )
-                #     break
+
             else:
                 self.clear()
                 print("There are no matches found, try again please")
@@ -122,21 +111,14 @@ class SearchEntry():
             for row in self.reader:
                 for x in set(pattern):
 
-                    if x in row['Tasktitle']:
+                    if x in row['Tasktitle'] or x in row['Notes']:
                         print("Task date: " + row['Taskdate'] + "\n"
                               "Task title: " + row['Tasktitle'] + "\n"
                               "Minutes: " + row['Minutes'] + "\n"
                               "Notes: " + row['Notes'] + "\n"
                               )
                         break
-
-                    if x in row['Notes']:
-                        print("Task date: " + row['Taskdate'] + "\n"
-                              "Task title: " + row['Tasktitle'] + "\n"
-                              "Minutes: " + row['Minutes'] + "\n"
-                              "Notes: " + row['Notes'] + "\n"
-                              )
-                        break
-            else:
-                self.clear()
-                print("There are no matches found, try again please")
+                else:
+                    self.clear()
+                    print("There are no matches found, try again please")
+                    break
