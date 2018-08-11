@@ -67,7 +67,7 @@ def search_entry_prompt():
                       "e) return to menu")
     if search_by == 'a':
         search_entry.clear()
-        search_entry.find_by_date()
+        search_entry.print()
     elif search_by == 'b':
         search_entry.clear()
         search_entry.find_by_exact_search()

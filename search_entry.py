@@ -20,6 +20,20 @@ class SearchEntry():
         """This is a function that clears the console screen"""
         os.system('cls' if os.name == 'nt' else 'clear')
 
+    def date_entries(self):
+        with open('worklog.csv', 'r') as csv_file:
+            self.update_csv()
+
+            self.reader = csv.DictReader(csv_file, delimiter ='\t')
+
+            counter = 1
+            for row in self.reader:
+                if row['Taskdate']:
+                    print(counter, row['Taskdate'])
+                    counter += 1
+
+        self.find_by_date()
+
     def find_by_date(self):
         """The user is asked to input a date.
            The user is then shown a corresponding work log entry"""
@@ -31,6 +45,8 @@ class SearchEntry():
 
             find_by_date = input("Enter a date")
 
+            self.entries_counter = 0
+
             for row in self.reader:
                 if row['Taskdate'] in find_by_date:
                     self.clear()
@@ -39,9 +55,26 @@ class SearchEntry():
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
-            else:
+                    self.entries_counter += 1
+
+            if self.entries_counter == 0:
                 self.clear()
-                print("There are no matches found, try again please hihihihi")
+                print("There are no matches found, try again please")
+
+
+    def time_entries(self):
+        with open('worklog.csv', 'r') as csv_file:
+            self.update_csv()
+
+            self.reader = csv.DictReader(csv_file, delimiter ='\t')
+
+            counter = 1
+            for row in self.reader:
+                if row['Minutes']:
+                    print(counter, row['Minutes'])
+                    counter += 1
+
+        self.find_by_time_spent()
 
 
     def find_by_time_spent(self):
@@ -55,17 +88,25 @@ class SearchEntry():
             self.reader = csv.DictReader(csv_file, delimiter ='\t')
 
             find_by_time_spent = input("Enter minutes")
+
+            self.entries_counter = 0
+
             for row in self.reader:
-                if row['Minutes'] == find_by_time_spent:
+                if row['Minutes'] in find_by_time_spent:
                     self.clear()
                     print("Task date: " + row['Taskdate'] + "\n"
                           "Task title: " + row['Tasktitle'] + "\n"
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
-            else:
+                    self.entries_counter += 1
+
+            if self.entries_counter == 0:
                 self.clear()
                 print("There are no matches found, try again please")
+
+
+
 
     def find_by_exact_search(self):
         """The user is asked to input a search criteria
@@ -78,6 +119,8 @@ class SearchEntry():
 
             exact_search = input("Enter your exact search")
 
+            self.entries_counter = 0
+
             for row in self.reader:
                 #The exact search is based on the columns: 'Tasktitle' and 'Notes'
                 if row['Tasktitle'] in exact_search or row['Notes'] in exact_search:
@@ -87,19 +130,23 @@ class SearchEntry():
                           "Minutes: " + row['Minutes'] + "\n"
                           "Notes: " + row['Notes'] + "\n"
                           )
+                    self.entries_counter += 1
 
-            else:
+            if self.entries_counter == 0:
                 self.clear()
                 print("There are no matches found, try again please")
 
     def find_by_pattern(self):
         """A regex input is expected, this method check if there is a match and prints it out"""
+
         with open('worklog.csv', 'r') as csv_file:
             self.update_csv()
 
             self.reader = csv.DictReader(csv_file, delimiter ='\t')
 
             find_by_pattern = input(r"Enter your pattern")
+
+            self.entries_counter = 0
 
             names_file = open("worklog.csv")
             data = names_file.read()
@@ -111,14 +158,17 @@ class SearchEntry():
             for row in self.reader:
                 for x in set(pattern):
 
+
                     if x in row['Tasktitle'] or x in row['Notes']:
                         print("Task date: " + row['Taskdate'] + "\n"
                               "Task title: " + row['Tasktitle'] + "\n"
                               "Minutes: " + row['Minutes'] + "\n"
                               "Notes: " + row['Notes'] + "\n"
                               )
+                        self.entries_counter += 1
                         break
-                else:
-                    self.clear()
-                    print("There are no matches found, try again please")
-                    break
+
+            if self.entries_counter == 0:
+                self.clear()
+                print("There are no matches found, try again please")
+
