@@ -178,25 +178,12 @@ class SearchEntry:
         """The user is asked to input a search criteria
             and prints out corresponding work log entries"""
 
-        while True:
-            try:
-                exact_search = input("\nWhat is your exact search? ")
-                self.clear()
-                if exact_search in set(self.exact):
-                    break
-                else:
-                    print("There are no entries with: " + exact_search + ", try again!\n")
-                    self.exact_entries()
-            except ValueError:
-                self.clear()
-                print("There are no matches found, try again please")
-                self.exact_entries()
-
         with open('worklog.csv', 'r') as csv_file:
             self.update_csv()
 
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
+            exact_search = input("What is your exact search? ")
             self.clear()
 
             entries_counter = 1
@@ -227,9 +214,12 @@ class SearchEntry:
 
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
-            find_by_pattern = input(r"Enter your pattern ")
+            find_by_pattern = input(r"Enter your regex pattern ")
+            self.clear()
 
             entries_counter = 1
+            print("Here are all task title and or note entries for " + find_by_pattern + ":\n")
+
 
             names_file = open("worklog.csv")
             data = names_file.read()
@@ -242,7 +232,6 @@ class SearchEntry:
                 for x in set(pattern):
 
                     if x == row['Tasktitle'] or x == row['Notes']:
-                        self.clear()
                         print("Entry:", entries_counter)
                         print("Task date: " + row['Taskdate'] + "\n"
                               "Task title: " + row['Tasktitle'] + "\n"

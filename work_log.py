@@ -76,7 +76,6 @@ def search_entry_prompt():
         search_entry.find_by_date()
     elif search_by == 'b':
         search_entry.clear()
-        search_entry.exact_entries()
         search_entry.find_by_exact_search()
     elif search_by == 'c':
         search_entry.clear()
