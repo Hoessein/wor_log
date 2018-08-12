@@ -7,7 +7,9 @@ import os
 class SearchEntry:
 
     def __init__(self):
-
+        self.dates = []
+        self.minutes = []
+        self.exact = []
         file_exists = os.path.isfile('worklog.csv')
 
         if file_exists:
@@ -32,15 +34,18 @@ class SearchEntry:
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
             counter = 1
-            unique_dates_only = []
 
             for row in self.reader:
                 if row['Taskdate']:
-                    unique_dates_only.append(row['Taskdate'])
+                    self.dates.append(row['Taskdate'])
 
-            for x in set(unique_dates_only):
-                print(str(counter) + ',' + x)
+            if len(self.dates) > 0:
+                print("You can pick from the following: \n")
+
+            for x in set(self.dates):
+                print(str(counter) + ': ' + x)
                 counter += 1
+
 
     def find_by_date(self):
         """The user is asked to input a date.
@@ -48,12 +53,17 @@ class SearchEntry:
 
         while True:
             try:
-                find_by_date = input("What is the date of the task? Please use DD/MM/YYYY")
+                find_by_date = input("\nWhat is the date of the task? Please use DD/MM/YYYY ")
                 datetime.datetime.strptime(find_by_date, '%d/%m/%Y')
-                break
-            except ValueError:
-                print("Please enter a date in the DD/MM/YYYY format")
                 self.clear()
+                if find_by_date in set(self.dates):
+                    break
+                else:
+                    print("\There are no entries with: " + find_by_date + " try again!\n")
+                    self.date_entries()
+            except ValueError:
+                self.clear()
+                print("Please enter a date in the DD/MM/YYYY format!\n")
                 self.date_entries()
 
         with open('worklog.csv', 'r') as csv_file:
@@ -61,21 +71,23 @@ class SearchEntry:
 
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
-            entries_counter = 0
+            entries_counter = 1
+            print("Here are the entries for:", find_by_date, "\n")
 
             for row in self.reader:
-                if row['Taskdate'] == find_by_date:
-                    self.clear()
+                if row['Taskdate'] == str(find_by_date):
+                    print("Entry:", entries_counter)
                     print("Task date: " + row['Taskdate'] + "\n"
                           "Task title: " + row['Tasktitle'] + "\n"
                           "Minutes: " + row['Minutes'] + "\n"
-                          "Notes: " + row['Notes'] + "\n"
+                          "Notes: " + row['Notes']
                           )
+                    print("_________")
                     entries_counter += 1
 
-            if entries_counter == 0:
+            if entries_counter == 1:
                 self.clear()
-                print("There are no matches found, try again please")
+                print("There are no matches found for: " + find_by_date + ", try again")
 
     def time_entries(self):
         """This method prints all of the entries to the screen
@@ -86,13 +98,14 @@ class SearchEntry:
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
             counter = 1
-            unique_minutes_only = []
 
             for row in self.reader:
                 if row['Minutes']:
-                    unique_minutes_only.append(row['Minutes'])
+                    self.minutes.append(row['Minutes'])
+            if len(self.minutes) > 0:
+                print("You can pick from the following: \n")
 
-            for x in set(unique_minutes_only):
+            for x in set(self.minutes):
                 print(str(counter) + ': ' + x + ' minutes')
                 counter += 1
 
@@ -103,8 +116,14 @@ class SearchEntry:
 
         while True:
             try:
-                find_by_time_spent = int(input("How many minutes did you work on it? "))
-                break
+                find_by_time_spent = input("\nWhat are the minutes spent on the task? "
+                                           "Please enter the amount of minutes in numbers only ")
+                self.clear()
+                if find_by_time_spent in set(self.minutes):
+                    break
+                else:
+                    print("There are no entries with: " + str(find_by_time_spent) + " minutes, try again!\n")
+                    self.time_entries()
             except ValueError:
                 self.clear()
                 print("Please enter the amount of minutes in numbers")
@@ -115,48 +134,88 @@ class SearchEntry:
 
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
-            entries_counter = 0
+            entries_counter = 1
+            print("Here are the entries for", find_by_time_spent, "minutes: \n")
 
             for row in self.reader:
                 if row['Minutes'] == str(find_by_time_spent):
-                    self.clear()
+                    print("Entry:", entries_counter)
                     print("Task date: " + row['Taskdate'] + "\n"
                           "Task title: " + row['Tasktitle'] + "\n"
                           "Minutes: " + row['Minutes'] + "\n"
-                          "Notes: " + row['Notes'] + "\n"
+                          "Notes: " + row['Notes']
                           )
+                    print("_________")
                     entries_counter += 1
 
-            if entries_counter == 0:
+            if entries_counter == 1:
                 self.clear()
                 print("There are no matches found, try again please")
+
+    def exact_entries(self):
+        """This method prints all of the entries to the screen
+        which the user can pick from"""
+        with open('worklog.csv', 'r') as csv_file:
+            self.update_csv()
+
+            self.reader = csv.DictReader(csv_file, delimiter='\t')
+
+            counter = 1
+
+            for row in self.reader:
+                if row['Tasktitle']:
+                    self.exact.append(row['Tasktitle'])
+                if row['Notes']:
+                    self.exact.append(row['Notes'])
+            if len(self.exact) > 0:
+                print("You can pick from the following: \n")
+
+            for x in set(self.exact):
+                print(str(counter) + ': ' + x)
+                counter += 1
 
     def find_by_exact_search(self):
         """The user is asked to input a search criteria
             and prints out corresponding work log entries"""
+
+        while True:
+            try:
+                exact_search = input("\nWhat is your exact search? ")
+                self.clear()
+                if exact_search in set(self.exact):
+                    break
+                else:
+                    print("There are no entries with: " + exact_search + ", try again!\n")
+                    self.exact_entries()
+            except ValueError:
+                self.clear()
+                print("There are no matches found, try again please")
+                self.exact_entries()
 
         with open('worklog.csv', 'r') as csv_file:
             self.update_csv()
 
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
-            exact_search = input("Enter your exact search")
+            self.clear()
 
-            entries_counter = 0
+            entries_counter = 1
+            print("Here are all task title and or note entries for " + exact_search + ":\n")
 
             for row in self.reader:
 
                 # The exact search is based on the columns: 'Tasktitle' and 'Notes'
                 if row['Tasktitle'] == exact_search or row['Notes'] == exact_search:
-                    self.clear()
+                    print("Entry:", entries_counter)
                     print("Task date: " + row['Taskdate'] + "\n"
                           "Task title: " + row['Tasktitle'] + "\n"
                           "Minutes: " + row['Minutes'] + "\n"
-                          "Notes: " + row['Notes'] + "\n"
+                          "Notes: " + row['Notes']
                           )
+                    print("_________")
                     entries_counter += 1
 
-            if entries_counter == 0:
+            if entries_counter == 1:
                 self.clear()
                 print("There are no matches found, try again please")
 
@@ -168,9 +227,9 @@ class SearchEntry:
 
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
-            find_by_pattern = input(r"Enter your pattern")
+            find_by_pattern = input(r"Enter your pattern ")
 
-            entries_counter = 0
+            entries_counter = 1
 
             names_file = open("worklog.csv")
             data = names_file.read()
@@ -183,14 +242,17 @@ class SearchEntry:
                 for x in set(pattern):
 
                     if x == row['Tasktitle'] or x == row['Notes']:
+                        self.clear()
+                        print("Entry:", entries_counter)
                         print("Task date: " + row['Taskdate'] + "\n"
                               "Task title: " + row['Tasktitle'] + "\n"
                               "Minutes: " + row['Minutes'] + "\n"
                               "Notes: " + row['Notes'] + "\n"
                               )
+                        print("_________")
                         entries_counter += 1
                         break
 
-            if entries_counter == 0:
+            if entries_counter == 1:
                 self.clear()
                 print("There are no matches found, try again please")

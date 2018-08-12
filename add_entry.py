@@ -1,6 +1,4 @@
 import datetime
-import os
-import csv
 
 
 class AddEntry:
@@ -12,11 +10,11 @@ class AddEntry:
         """Takes an input from the user and makes sure its in the write format"""
         while True:
             try:
-                task_date = input("What is the date of the task? Please use DD/MM/YYYY")
+                task_date = input("What is the date of the task? Please use DD/MM/YYYY ")
                 datetime.datetime.strptime(task_date, '%d/%m/%Y')
                 return task_date
             except ValueError:
-                print("Please enter a date in the DD/MM/YYYY format")
+                print("Please enter a date in the DD/MM/YYYY format ")
 
     def task_title(self):
         """Takes a task title from the user"""
@@ -30,13 +28,12 @@ class AddEntry:
                 time_spent = int(input("How many minutes did you work on it? "))
                 return time_spent
             except ValueError:
-                print("Please enter the amount of minutes in numbers")
+                print("Please enter the amount of minutes in numbers ")
 
     def notes(self):
         """Takes additional notes from the user as input"""
         notes = input("Do you have any additional notes? ")
         return notes
-
 
 
 

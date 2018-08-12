@@ -10,6 +10,7 @@ search_entry = SearchEntry()
 
 
 def instructions():
+    search_entry.clear()
     """Instructions on how the console works
     it accepts a user input"""
 
@@ -20,7 +21,7 @@ def instructions():
               "Press c to quit the program\n"
               )
 
-        start = input("What would you like to do?")
+        start = input("What would you like to do? ")
 
         if start == 'a':
             search_entry.clear()
@@ -40,6 +41,8 @@ def instructions():
             print("Thank you for using the Worklog, goodbye!")
             sys.exit()
 
+        else:
+            search_entry.clear()
 
 def add_entry_prompt():
     """Creates a csv file, in the csv method the methods to ask user for input will be called
@@ -50,7 +53,8 @@ def add_entry_prompt():
 
 def back_to_menu():
     """If the user enters any key they will be taken back to the menu"""
-    to_menu = input("The entry has been added. Press any key to return to the menu! ")
+    to_menu = input("\nThe entry has been added. Press any key to return to the menu! ")
+    search_entry.clear()
 
     if to_menu == "":
         search_entry.clear()
@@ -60,18 +64,19 @@ def back_to_menu():
 def search_entry_prompt():
     """The search method will be run accordingly depending on the user input"""
     search_entry.clear()
-    search_by = input("Do you want to search by: \n"
+    search_by = input("Do you want to search by: \n\n"
                       "a) Exact date\n"
                       "b) Exact search\n" 
                       "c) Regex pattern\n"
                       "d) Time spent\n"
-                      "e) return to menu")
+                      "e) return to menu ")
     if search_by == 'a':
         search_entry.clear()
         search_entry.date_entries()
         search_entry.find_by_date()
     elif search_by == 'b':
         search_entry.clear()
+        search_entry.exact_entries()
         search_entry.find_by_exact_search()
     elif search_by == 'c':
         search_entry.clear()
