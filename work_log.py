@@ -21,7 +21,7 @@ def instructions():
               "Press c to quit the program\n"
               )
 
-        start = input("What would you like to do? ")
+        start = input("What would you like to do? ").lower()
 
         if start == 'a':
             search_entry.clear()
@@ -69,7 +69,7 @@ def search_entry_prompt():
                       "b) Exact search\n" 
                       "c) Regex pattern\n"
                       "d) Time spent\n"
-                      "e) return to menu ")
+                      "e) return to menu ").lower()
     if search_by == 'a':
         search_entry.clear()
         search_entry.date_entries()

@@ -178,7 +178,7 @@ class SearchEntry:
     def no_exact_filter(self):
         """This method filters if the exact search of the user exists"""
         while True:
-            self.exact_search = input("What is your exact search? ")
+            self.exact_search = input("What is your exact search? ").lower()
             self.clear()
 
             # if the entry is available it will break out of the loop
@@ -219,7 +219,7 @@ class SearchEntry:
             for row in self.reader:
 
                 # The exact search is based on the columns: 'Tasktitle' and 'Notes'
-                if row['Tasktitle'] == self.exact_search or row['Notes'] == self.exact_search:
+                if row['Tasktitle'] in self.exact_search or row['Notes'] in self.exact_search:
                     print("Entry:", entries_counter)
                     print("Task date: " + row['Taskdate'] + "\n"
                           "Task title: " + row['Tasktitle'] + "\n"
@@ -252,7 +252,7 @@ class SearchEntry:
                 for row in self.reader:
                     for x in set(self.pattern):
                         # if the entry is available it will break out of the loop
-                        if x == row['Tasktitle'] or x == row['Notes']:
+                        if x in row['Tasktitle'] or x in row['Notes']:
                             return
                 # if the entry is not available the user is asked to try again
                 else:
@@ -289,7 +289,7 @@ class SearchEntry:
             for row in self.reader:
                 for x in set(self.pattern):
                     # The regex pattern is based on the columns: 'Tasktitle' and 'Notes'
-                    if x == row['Tasktitle'] or x == row['Notes']:
+                    if x in row['Tasktitle'] or x in row['Notes']:
                         print("Entry:", entries_counter)
                         print("Task date: " + row['Taskdate'] + "\n"
                               "Task title: " + row['Tasktitle'] + "\n"

@@ -23,7 +23,7 @@ class AddEntry:
 
     def task_title(self):
         """Takes a task title from the user"""
-        task_title = input("What is the title of the task?: ")
+        task_title = input("What is the title of the task?: ").lower()
         return task_title
 
     def time_spent(self):
@@ -38,7 +38,7 @@ class AddEntry:
 
     def notes(self):
         """Takes additional notes from the user as input"""
-        notes = input("Do you have any additional notes?: ")
+        notes = input("Do you have any additional notes?: ").lower()
         return notes
 
 
