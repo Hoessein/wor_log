@@ -230,7 +230,6 @@ class SearchEntry:
             if entries_counter == 1:
                 self.clear()
 
-
     def no_pattern_filter(self):
         while True:
             self.pattern_search = input(r"Enter your regex pattern: ")

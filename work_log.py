@@ -44,6 +44,7 @@ def instructions():
         else:
             search_entry.clear()
 
+
 def add_entry_prompt():
     """Creates a csv file, in the csv method the methods to ask user for input will be called
         After the entry is added, the instructions menu will be shown again"""
