@@ -10,6 +10,9 @@ class SearchEntry:
         self.dates = []
         self.minutes = []
         self.exact = []
+        self.exact_search = ""
+        self.pattern = []
+        self.pattern_search = ""
         file_exists = os.path.isfile('worklog.csv')
 
         if file_exists:
@@ -27,7 +30,7 @@ class SearchEntry:
 
     def date_entries(self):
         """This method prints all of the entries to the screen
-        which the user can pick from"""
+        which the user can then pick from"""
         with open('worklog.csv', 'r') as csv_file:
             self.update_csv()
 
@@ -35,6 +38,7 @@ class SearchEntry:
 
             counter = 1
 
+            # all of the entries are appeneded to a list stored in an instance variable
             for row in self.reader:
                 if row['Taskdate']:
                     self.dates.append(row['Taskdate'])
@@ -46,20 +50,21 @@ class SearchEntry:
                 print(str(counter) + ': ' + x)
                 counter += 1
 
-
     def find_by_date(self):
-        """The user is asked to input a date.
+        """The user is asked to input a date from the options printed to the screen
            The user is then shown a corresponding work log entry"""
-
         while True:
             try:
                 find_by_date = input("\nWhat is the date of the task? Please use DD/MM/YYYY ")
+                # the input must be in a specific date format, otherwise it won't be accepted.
                 datetime.datetime.strptime(find_by_date, '%d/%m/%Y')
                 self.clear()
+                # if the entry is available it will break out of the loop
                 if find_by_date in set(self.dates):
                     break
+                # if the entry is not available the user is asked to try again
                 else:
-                    print("\There are no entries with: " + find_by_date + " try again!\n")
+                    print("There are no entries with: " + find_by_date + " try again!\n")
                     self.date_entries()
             except ValueError:
                 self.clear()
@@ -87,7 +92,6 @@ class SearchEntry:
 
             if entries_counter == 1:
                 self.clear()
-                print("There are no matches found for: " + find_by_date + ", try again")
 
     def time_entries(self):
         """This method prints all of the entries to the screen
@@ -99,9 +103,11 @@ class SearchEntry:
 
             counter = 1
 
+            # all of the entries are appeneded to a list stored in an instance variable
             for row in self.reader:
                 if row['Minutes']:
                     self.minutes.append(row['Minutes'])
+
             if len(self.minutes) > 0:
                 print("You can pick from the following: \n")
 
@@ -119,8 +125,10 @@ class SearchEntry:
                 find_by_time_spent = input("\nWhat are the minutes spent on the task? "
                                            "Please enter the amount of minutes in numbers only ")
                 self.clear()
+                # if the entry is available it will break out of the loop
                 if find_by_time_spent in set(self.minutes):
                     break
+                # if the entry is not available the user is asked to try again
                 else:
                     print("There are no entries with: " + str(find_by_time_spent) + " minutes, try again!\n")
                     self.time_entries()
@@ -150,7 +158,6 @@ class SearchEntry:
 
             if entries_counter == 1:
                 self.clear()
-                print("There are no matches found, try again please")
 
     def exact_entries(self):
         """This method prints all of the entries to the screen
@@ -160,19 +167,40 @@ class SearchEntry:
 
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
-            counter = 1
-
+            # all of the entries are appeneded to a list stored in an instance variable
             for row in self.reader:
                 if row['Tasktitle']:
                     self.exact.append(row['Tasktitle'])
                 if row['Notes']:
                     self.exact.append(row['Notes'])
-            if len(self.exact) > 0:
-                print("You can pick from the following: \n")
 
-            for x in set(self.exact):
-                print(str(counter) + ': ' + x)
-                counter += 1
+    def no_exact_filter(self):
+        while True:
+            self.exact_search = input("What is your exact search? ")
+            self.clear()
+
+            # if the entry is available it will break out of the loop
+            if self.exact_search in set(self.exact):
+                break
+            # if the entry is not available the user is asked to try again
+            else:
+                print("There are no entries with: " + self.exact_search)
+                # if the input doesn't exist in the worklog,
+                # the user is told to try again or can return to the menu
+                while True:
+                    nu = input("\nEnter 1 to try another exact search "
+                               "\nEnter 2 to go back to the menu!\n ")
+                    if nu == '1':
+                        self.clear()
+                        break
+                    elif nu == '2':
+                        return
+                    # the loop will keep running if they don't pick 1 to try again
+                    # or 2 to go back to the menu
+                    else:
+                        self.clear()
+                        print("Pick one of the provided options")
+                        continue
 
     def find_by_exact_search(self):
         """The user is asked to input a search criteria
@@ -183,16 +211,13 @@ class SearchEntry:
 
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
-            exact_search = input("What is your exact search? ")
-            self.clear()
-
             entries_counter = 1
-            print("Here are all task title and or note entries for " + exact_search + ":\n")
+            print("Here are all task title and or note entries for " + self.exact_search + ":\n")
 
             for row in self.reader:
 
                 # The exact search is based on the columns: 'Tasktitle' and 'Notes'
-                if row['Tasktitle'] == exact_search or row['Notes'] == exact_search:
+                if row['Tasktitle'] == self.exact_search or row['Notes'] == self.exact_search:
                     print("Entry:", entries_counter)
                     print("Task date: " + row['Taskdate'] + "\n"
                           "Task title: " + row['Tasktitle'] + "\n"
@@ -204,7 +229,46 @@ class SearchEntry:
 
             if entries_counter == 1:
                 self.clear()
-                print("There are no matches found, try again please")
+
+
+    def no_pattern_filter(self):
+        while True:
+            self.pattern_search = input(r"Enter your regex pattern: ")
+
+            with open('worklog.csv', 'r') as csv_file:
+                self.update_csv()
+
+                self.reader = csv.DictReader(csv_file, delimiter='\t')
+
+                self.clear()
+
+                names_file = open("worklog.csv")
+                data = names_file.read()
+
+                self.pattern = re.findall(self.pattern_search, data)
+
+                for row in self.reader:
+                    for x in set(self.pattern):
+                        # if the entry is available it will break out of the loop
+                        if x == row['Tasktitle'] or x == row['Notes']:
+                            return
+                # if the entry is not available the user is asked to try again
+                else:
+                    print("There are no entries with: " + self.pattern_search)
+                    while True:
+                        nu = input("\nEnter 1 to try another regex pattern "
+                                   "\nEnter 2 to go back to the menu!\n ")
+                        if nu == '1':
+                            self.clear()
+                            break
+                        elif nu == '2':
+                            return
+                        # the loop will keep running if they don't pick 1 to try again
+                        # or 2 to go back to the menu
+                        else:
+                            self.clear()
+                            print("Pick one of the provided options")
+                            continue
 
     def find_by_pattern(self):
         """A regex input is expected, this method checks if there is a match and prints it out"""
@@ -214,23 +278,15 @@ class SearchEntry:
 
             self.reader = csv.DictReader(csv_file, delimiter='\t')
 
-            find_by_pattern = input(r"Enter your regex pattern ")
             self.clear()
 
             entries_counter = 1
-            print("Here are all task title and or note entries for " + find_by_pattern + ":\n")
 
-
-            names_file = open("worklog.csv")
-            data = names_file.read()
-
-            pattern = re.findall(find_by_pattern, data)
-
-            names_file.close()
+            print("Here are all task title and or note entries for " + self.pattern_search + ":\n")
 
             for row in self.reader:
-                for x in set(pattern):
-
+                for x in set(self.pattern):
+                    # The regex pattern is based on the columns: 'Tasktitle' and 'Notes'
                     if x == row['Tasktitle'] or x == row['Notes']:
                         print("Entry:", entries_counter)
                         print("Task date: " + row['Taskdate'] + "\n"
@@ -244,4 +300,3 @@ class SearchEntry:
 
             if entries_counter == 1:
                 self.clear()
-                print("There are no matches found, try again please")

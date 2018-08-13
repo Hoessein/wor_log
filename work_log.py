@@ -33,8 +33,8 @@ def instructions():
                 search_entry.clear()
                 search_entry_prompt()
             else:
-                print("There are no entries, first add an entry before you search")
                 search_entry.clear()
+                print("There are no entries made in the work log, first add an entry before you search!\n")
 
         elif start == 'c':
             search_entry.clear()
@@ -63,7 +63,6 @@ def back_to_menu():
 
 def search_entry_prompt():
     """The search method will be run accordingly depending on the user input"""
-    search_entry.clear()
     search_by = input("Do you want to search by: \n\n"
                       "a) Exact date\n"
                       "b) Exact search\n" 
@@ -76,14 +75,23 @@ def search_entry_prompt():
         search_entry.find_by_date()
     elif search_by == 'b':
         search_entry.clear()
+        search_entry.exact_entries()
+        search_entry.no_exact_filter()
         search_entry.find_by_exact_search()
     elif search_by == 'c':
         search_entry.clear()
+        search_entry.no_pattern_filter()
         search_entry.find_by_pattern()
     elif search_by == 'd':
         search_entry.clear()
         search_entry.time_entries()
         search_entry.find_by_time_spent()
+    elif search_by == 'e':
+        instructions()
+    else:
+        search_entry.clear()
+        print("Please pick an option from the provided list.\n")
+        search_entry_prompt()
 
 
 def write_to_csv():
