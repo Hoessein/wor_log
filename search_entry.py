@@ -7,6 +7,7 @@ import os
 class SearchEntry:
 
     def __init__(self):
+        # couple of instance variables I need
         self.dates = []
         self.minutes = []
         self.exact = []
@@ -175,6 +176,7 @@ class SearchEntry:
                     self.exact.append(row['Notes'])
 
     def no_exact_filter(self):
+        """This method filters if the exact search of the user exists"""
         while True:
             self.exact_search = input("What is your exact search? ")
             self.clear()
@@ -231,6 +233,7 @@ class SearchEntry:
                 self.clear()
 
     def no_pattern_filter(self):
+        """This method filters if the regex pattern search of the user exists"""
         while True:
             self.pattern_search = input(r"Enter your regex pattern: ")
 

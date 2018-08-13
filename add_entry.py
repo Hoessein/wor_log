@@ -19,7 +19,7 @@ class AddEntry:
                 return task_date
             except ValueError:
                 self.clear()
-                print("Enter the correct format\n")
+                print("Enter the correct format.\n")
 
     def task_title(self):
         """Takes a task title from the user"""
@@ -30,11 +30,11 @@ class AddEntry:
         """Takes an input from the user, the input can only be numbers"""
         while True:
             try:
-                time_spent = int(input("How many minutes did you work on it? "))
+                time_spent = int(input("How many minutes did you work on it?: "))
                 return time_spent
             except ValueError:
                 self.clear()
-                print("Please enter the amount of minutes in numbers ")
+                print("Please enter the amount of minutes in numbers.\n")
 
     def notes(self):
         """Takes additional notes from the user as input"""

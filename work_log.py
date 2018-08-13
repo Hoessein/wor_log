@@ -10,9 +10,9 @@ search_entry = SearchEntry()
 
 
 def instructions():
-    search_entry.clear()
     """Instructions on how the console works
     it accepts a user input"""
+    search_entry.clear()
 
     while True:
         print("WORK LOG \n"
@@ -111,8 +111,9 @@ def write_to_csv():
         csv_writer.writerow({'Taskdate': add_entry.task_date(), 'Tasktitle': add_entry.task_title(),
                              'Minutes': add_entry.time_spent(), 'Notes': add_entry.notes()})
 
-        nopes = SearchEntry()
-        nopes.update_csv()
+        # updates csv file immediately
+        update = SearchEntry()
+        update.update_csv()
 
 
 if __name__ == '__main__':
