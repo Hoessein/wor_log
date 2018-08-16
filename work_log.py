@@ -78,11 +78,9 @@ def search_entry_prompt():
         search_entry.clear()
         search_entry.exact_entries()
         search_entry.no_exact_filter()
-        search_entry.find_by_exact_search()
     elif search_by == 'c':
         search_entry.clear()
-        search_entry.no_pattern_filter()
-        search_entry.find_by_pattern()
+        search_entry.match_filter()
     elif search_by == 'd':
         search_entry.clear()
         search_entry.time_entries()
