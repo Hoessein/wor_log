@@ -109,10 +109,5 @@ def write_to_csv():
         csv_writer.writerow({'Taskdate': add_entry.task_date(), 'Tasktitle': add_entry.task_title(),
                              'Minutes': add_entry.time_spent(), 'Notes': add_entry.notes()})
 
-        # updates csv file immediately
-        update = SearchEntry()
-        update.update_csv()
-
-
 if __name__ == '__main__':
     instructions()
