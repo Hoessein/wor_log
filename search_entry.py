@@ -20,6 +20,7 @@ class SearchEntry:
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def open_update_csv(self):
+        """opens the csv files and appends its content to a list of dictionaries i can reuse multiple times"""
         with open('worklog.csv', 'rt') as csv_file:
             reader = csv.DictReader(csv_file, delimiter='\t')
             data = list(reader)  # read everything else into a list of rows
