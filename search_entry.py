@@ -20,7 +20,7 @@ class SearchEntry:
         os.system('cls' if os.name == 'nt' else 'clear')
 
     def open_update_csv(self):
-        """opens the csv files and appends its content to a list of dictionaries i can reuse multiple times"""
+        """opens the csv files and appends its content to a list of dictionaries."""
         with open('worklog.csv', 'rt') as csv_file:
             reader = csv.DictReader(csv_file, delimiter='\t')
             data = list(reader)  # read everything else into a list of rows
@@ -43,7 +43,7 @@ class SearchEntry:
                 entries_counter += 1
 
     def if_no(self, search, search1, method):
-        """A method that does wrong inputs for the exact and pattern searches"""
+        """A method that tests wrong inputs for exact and pattern searches"""
         self.clear()
         print("There are no entries with: " + search)
         while True:
@@ -62,15 +62,6 @@ class SearchEntry:
                 self.clear()
                 print("Pick one of the provided options")
                 continue
-
-    def make_data(self):
-        """With this method i can easliy loop over the data to find regex patterns"""
-        with open('worklog.csv', 'r') as csv_file:
-            self.reader = csv.DictReader(csv_file, delimiter='\t')
-            names_file = open("worklog.csv")
-            next(names_file)
-            data = names_file.read()
-            return data
 
     def date_entries(self):
         """This method prints all of the entries to the screen
@@ -169,8 +160,8 @@ class SearchEntry:
             self.clear()
             # if the entry is available it will break out of the loop
             for x in set(self.exact):
-                if self.exact_search == x:
-                    self.printer2()
+                if self.exact_search in x:
+                    self.exact_search_printer()
                     return
             # if the entry is not available the user is asked to try again
             else:
@@ -179,14 +170,14 @@ class SearchEntry:
                 # the user is told to try again or can return to the menu
                 return
 
-    def printer2(self):
+    def exact_search_printer(self):
         """A method that does different kind of prints"""
         entries_counter = 1
 
         print("Here are all task title and or note entries for " + self.exact_search + ":\n")
 
         for row in self.open_update_csv():
-            if self.exact_search == row['Tasktitle'] or self.exact_search == row['Notes']:
+            if self.exact_search in row['Tasktitle'] or self.exact_search in row['Notes']:
                 print("Entry:", entries_counter)
                 print("Task date: " + row['Taskdate'] + "\n"
                       "Task title: " + row['Tasktitle'] + "\n"
@@ -196,12 +187,20 @@ class SearchEntry:
                 print("_________")
                 entries_counter += 1
 
+    def make_data(self):
+        """With this method i can easliy loop over the data to find regex patterns"""
+        with open('worklog.csv', 'r') as csv_file:
+            self.reader = csv.DictReader(csv_file, delimiter='\t')
+            names_file = open("worklog.csv")
+            next(names_file)
+            data = names_file.read()
+            return data
+
     def match_filter(self):
-        """This method checks if the entry of the regex contains a match"""
+        """This method tests if the entry of the regex contains a match"""
         while True:
             self.pattern_search = input(r"Enter your regex pattern: ")
-            if re.match(self.pattern_search, self.make_data()) and self.pattern_search != "":
-
+            if re.findall(self.pattern_search, self.make_data()) and self.pattern_search != "":
                 self.no_pattern_filter()
                 break
             else:
@@ -219,7 +218,6 @@ class SearchEntry:
 
             for row in self.open_update_csv():
                 for x in set(self.pattern):
-                    print(x)
                     # if the entry matches anything it will break out of the loop
                     if x in row['Tasktitle'] or x in row['Notes']:
                         self.find_by_pattern()
